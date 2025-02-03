@@ -1,0 +1,8 @@
+{
+  "name": "Hans",
+  "age": 33,
+  "size": 180,
+  "surname": {
+    "string": "test"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "record",
+  "namespace": "foo",
+  "name": "Person",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "int"
+    },
+    {
+      "name": "size",
+      "type": "int"
+    },
+    {
+      "name": "surname",
+      "type": ["null", "string"]
+    }
+  ]
+}

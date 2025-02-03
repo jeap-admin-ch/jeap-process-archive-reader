@@ -1,0 +1,11 @@
+# IntelliJ
+*.iml
+.idea/*
+!.idea/runConfigurations
+!.idea/runConfigurations/*.xml
+
+# Maven
+target/
+*.versionsBackup
+
+*.log
