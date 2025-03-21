@@ -13,6 +13,7 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.auth.signer.AwsS3V4Signer;
 import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
 import software.amazon.awssdk.core.client.config.SdkAdvancedClientOption;
+import software.amazon.awssdk.http.urlconnection.ProxyConfiguration;
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
@@ -42,7 +43,14 @@ public class S3ObjectStorageConfiguration {
                 .region(connectionProperties.getRegion())
                 .forcePathStyle(true)
                 .credentialsProvider(awsCredentialsProvider(connectionProperties))
-                .httpClient(UrlConnectionHttpClient.builder().build())
+                .httpClient(UrlConnectionHttpClient.builder()
+                        .proxyConfiguration(ProxyConfiguration.builder() // Configure proxy to work around the issue https://github.com/aws/aws-sdk-java-v2/issues/4728 which is coming with the aws sdk update
+                                .useSystemPropertyValues(false)
+                                .useEnvironmentVariablesValues(false)
+                                .build()
+                        )
+                        .build()
+                )
                 .overrideConfiguration(overrideConfig.build());
         if (hasText(connectionProperties.getAccessUrl())) {
             log.info("Overriding endpoint in S3Client...");
