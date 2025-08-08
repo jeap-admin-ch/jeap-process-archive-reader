@@ -14,11 +14,23 @@ softwareType: library
 description:
   en:
     localisedName: jeap-process-archive-reader
-    shortDescription: TODO (Max. 150 characters)
+    shortDescription: A library for retrieving and deserializing objects from a jEAP process archive bucket on S3
     longDescription: >
-      TODO (Min. 150 characters)
+      The jEAP Process Archive Reader Library enables clients to access and read
+      artifacts stored in the jEAP Process Archive on an S3-compatible object storage directly as typed objects.
+      It automatically retrieves the writer schema from the archive and verifies
+      compatibility with the reader schema of the generated class, ensuring safe
+      deserialization. The library supports reading specific object versions,
+      handling encrypted artifacts via a DecryptingObjectStorageRepository, and
+      integrating with jEAP Crypto for key management. It requires an AWS S3Client
+      for storage access, which can be auto-configured or instantiated with explicit
+      connection settings. This library simplifies interaction with archived process
+      data, providing a type-safe and secure way to restore historical objects for
+      further processing or analysis.
     features:
-      - TODO
+      - Reads and deserializes archived objects from S3 with schema compatibility checks
+      - Supports versioned retrieval and encrypted object access
+      - Integrates with jEAP Crypto for client-side decryption
 legal:
   license: Apache-2.0
 maintenance:
