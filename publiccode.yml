@@ -1,8 +1,8 @@
 publiccodeYmlVersion: 0.4.0
 name: jeap-process-archive-reader
 applicationSuite: jEAP
-softwareVersion: 1.39.0
-releaseDate: 2025-12-08
+softwareVersion: 1.40.0
+releaseDate: 2025-12-16
 url: "https://github.com/jeap-admin-ch/jeap-process-archive-reader.git"
 landingURL: "https://github.com/jeap-admin-ch/jeap"
 platforms:
