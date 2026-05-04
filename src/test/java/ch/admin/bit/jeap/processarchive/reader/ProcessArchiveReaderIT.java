@@ -6,10 +6,9 @@ import ch.admin.bit.jeap.processarchive.reader.objectstorage.DecryptingStorageOb
 import ch.admin.bit.jeap.processarchive.reader.objectstorage.S3StorageObjectRepository;
 import foo.Person;
 import org.junit.jupiter.api.Test;
-import org.mockito.Spy;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.ContextConfiguration;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -32,10 +31,9 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(classes = {ProcessArchiveReaderAutoConfiguration.class})
 class ProcessArchiveReaderIT {
 
-    @Spy
-    private KeyReferenceCryptoService cryptoService = new NoopKeyReferenceCryptoService();
+    private final KeyReferenceCryptoService cryptoService = spy(new NoopKeyReferenceCryptoService());
 
-    @MockBean
+    @MockitoBean
     private S3Client s3Client;
 
     @Test
@@ -86,7 +84,7 @@ class ProcessArchiveReaderIT {
                 Map.of(ProcessArchiveReader.SCHEMA_FILE_KEY, "schemaLocation", "is_encrypted", "true") :
                 Map.of(ProcessArchiveReader.SCHEMA_FILE_KEY, "schemaLocation");
         Map<String, String> schemaMetadataMap = Map.of(ProcessArchiveReader.SCHEMA_FILE_KEY, "schemaLocation");
-        ;
+
         HeadObjectResponse metadataResponse = HeadObjectResponse.builder()
                 .metadata(metadataMap)
                 .build();
