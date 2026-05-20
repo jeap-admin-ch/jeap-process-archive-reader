@@ -28,13 +28,13 @@
     <parent>
         <groupId>ch.admin.bit.jeap</groupId>
         <artifactId>jeap-spring-boot-parent</artifactId>
-        <version>34.4.0-alpha-springboot4</version>
+        <version>34.12.0-alpha-springboot4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <artifactId>jeap-process-archive-reader</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
-    <version>2.0.0-alpha-springboot4-SNAPSHOT</version>
+    <version>2.1.0-alpha-springboot4-SNAPSHOT</version>
 
     <properties>
         <!-- Note: Align with version in jeap-messaging -->
