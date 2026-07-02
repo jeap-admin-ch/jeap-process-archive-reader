@@ -9,7 +9,7 @@ deserialization.
 
 - A `software.amazon.awssdk.services.s3.S3Client` for the archive bucket.
 - A `ch.admin.bit.jeap.crypto.api.KeyReferenceCryptoService` from jEAP Crypto. See the
-  [jeap-crypto](https://github.com/jeap-admin-ch/jeap-crypto) documentation on how to configure and
+  [jeap-crypto](https://jeap-admin-ch.github.io/docs/building-blocks/libraries/jeap-crypto/) documentation on how to configure and
   inject a `KeyReferenceCryptoService` instance. The library declares `jeap-crypto-core` as a `provided`
   dependency, so the consuming service must bring jEAP Crypto on its classpath.
 

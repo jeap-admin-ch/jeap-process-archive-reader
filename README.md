@@ -1,73 +1,41 @@
-# jEAP Process Archive Reader - Library
+# jEAP Process Archive Reader
 
-## Getting started
+`jeap-process-archive-reader` is a small Spring Boot library for reading and deserializing artifacts
+that a service archived in the jEAP Process Archive on S3-compatible object storage. Given a bucket and
+object key it fetches the binary Avro object, reads the writer schema that was stored alongside it, and
+deserializes it directly into the generated reader type. If the writer and reader schemas are not
+compatible the read fails with a `ProcessArchiveReaderException`. It provides:
 
-This library can be used to retrieve an object from the process archive (S3) and convert it directly into the target
-object.
-The writer schema will be read from the archive and if the reader schema is compatible (the one from the generated
-class), the object will be returned.
-If the two schemas are not compatible, the library throws a `ProcessArchiveReaderException`.
+* A `ProcessArchiveReader` bean that returns archived objects as strongly-typed, Avro-generated Java objects
+* Schema-on-read: the writer schema is fetched from the archive and resolved against the reader schema
+* Retrieval of the current object version or a specific S3 object version
+* Client-side decryption of encrypted artifacts via jEAP Crypto (`DecryptingStorageObjectRepository`)
+* Auto-configuration that reuses an existing `S3Client` bean or builds one from connection properties
 
-## Usage
+## Documentation
 
-If the library is added to a service's dependencies, the `ProcessArchiveReader` bean will be automatically instantiated.
+Start with [Getting started](docs/getting-started.md), then follow the links below.
 
-```xml
-<dependency>
-    <groupId>ch.admin.bit.jeap</groupId>
-    <artifactId>jeap-process-archive-reader</artifactId>
-</dependency>
-```
+| Topic                                                     | File                                                                       |
+|-----------------------------------------------------------|----------------------------------------------------------------------------|
+| Getting started (add the dependency, read an artifact)    | [docs/getting-started.md](docs/getting-started.md)                         |
+| How it works (schema-on-read, S3 layout, versions)        | [docs/how-it-works.md](docs/how-it-works.md)                               |
+| Configuration reference (`jeap.process-archive.reader.*`) | [docs/configuration.md](docs/configuration.md)                             |
+| Reading encrypted artifacts                               | [docs/reading-encrypted-artifacts.md](docs/reading-encrypted-artifacts.md) |
 
-The client can be then autowired:
+## Modules
 
-```java
-@Autowired
-private ProcessArchiveReader archiveReader;
-```
+This is a single-module library. The group id is `ch.admin.bit.jeap`; the version is managed by the
+jEAP Spring Boot parent.
 
-The client can retrieve the current version of an object of type `MyArchiveType` (MyArchiveType is AvroGenerated):
-
-```java
-MyArchiveType myObject = archiveReader.readArtifact(MyArchiveType.class, bucket, key);
-```
-
-The client can also retrieve a specific version of an object:
-```java
-MyArchiveType myObject = archiveReader.readArtifact(MyArchiveType.class, bucket, key, version);
-```
-
-### Reading encrypted objects
-
-To read objects encrypted with a specific key, create a `ProcessArchiveReader` instance with
-a `DecryptingObjectStorageRepository` as shown in the following example:
-
-```java
-KeyReferenceCryptoService cryptoService = ...;
-ProcessArchiveReader reader = new ProcessArchiveReader(
-        new DecryptingObjectStorageRepository(s3Client, cryptoService));
-```
-
-## S3Client
-
-The `ProcessArchiveReader` needs a `S3Client` (software.amazon.awssdk.services.s3.S3Client) to access the bucket.
-If no `S3Client` is available in the context, a new `S3Client` can be instantiated using the following properties:
-
-```yaml
-jeap:
-  processarchive:
-    reader:
-      connection:
-        access-url: <access-url>
-        access-key: <access-key>
-        secret-key: <secret-key>
-```
+| Artifact                      | Purpose                                                                                     |
+|-------------------------------|---------------------------------------------------------------------------------------------|
+| `jeap-process-archive-reader` | `ProcessArchiveReader`, the S3 storage repositories and the Spring Boot auto-configuration |
 
 ## Changes
 
 This library needs to be versioned using [Semantic Versioning](http://semver.org/) and all changes need to be documented
 at [CHANGELOG.md](./CHANGELOG.md) following the format defined in [Keep a Changelog](http://keepachangelog.com/)
-
 
 ## Note
 
