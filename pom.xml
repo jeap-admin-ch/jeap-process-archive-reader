@@ -28,7 +28,7 @@
     <parent>
         <groupId>ch.admin.bit.jeap</groupId>
         <artifactId>jeap-spring-boot-parent</artifactId>
-        <version>39.5.0</version>
+        <version>40.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -37,13 +37,6 @@
     <version>7.2.0-SNAPSHOT</version>
 
     <properties>
-        <!-- Temporary pin: the Avro class whitelist (org.apache.avro.util.ClassSecurityValidator) only exists as of
-             Avro 1.12.2. Remove as soon as a jeap-spring-boot-parent based on jeap-internal-spring-boot-parent >= 9.0.0
-             is released, the Avro version is then again taken from the jEAP parent. -->
-        <avro.version>1.12.2</avro.version>
-        <!-- AvroClassSecurity, used by the tests, is introduced by jeap-messaging 18.0.0, the jEAP parent still
-             manages 17.16.0. Remove as soon as a jeap-spring-boot-parent managing 18.0.0 is released. -->
-        <jeap-messaging.version>18.0.0</jeap-messaging.version>
         <maven.javadoc.skip>false</maven.javadoc.skip>
     </properties>
 

@@ -13,6 +13,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   the packages to trust with `jeap.messaging.avro.trusted-packages`, an application without jeap-messaging installs it
   itself with `AvroClassSecurity`. See [Avro class whitelist](docs/configuration.md#avro-class-whitelist)
 
+### Dependencies
+- **ch.admin.bit.jeap:jeap-spring-boot-parent**: 39.5.0 → 40.0.0 (major, brings Avro 1.12.2 and jeap-messaging 18.0.0)
+
 ## [7.1.0] - 2026-08-20
 
 ### Changed
