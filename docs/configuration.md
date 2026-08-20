@@ -45,30 +45,40 @@ When `access-key` or `secret-key` is missing, the client falls back to the AWS
 
 ## Avro class whitelist
 
-Avro deserializes generated classes only if they are trusted. The library installs the jEAP whitelist, which trusts
-the Avro generated types in the package `ch.admin` — the package the archived objects of a jEAP process archive live
-in. A service reading archived objects of other packages has to add them to the whitelist:
+Since Avro 1.12.2, Avro resolves a class from a schema only if that class is trusted. Reading an archived object
+deserializes it, so a whitelist has to be installed before the first read — otherwise the read fails with a
+`SecurityException`. **This library does not install one**, because the whitelist is global, static state in Avro that
+is installed exactly once per JVM: installing it belongs to the application, not to a library it happens to use.
+
+### Applications using jeap-messaging
+
+Nothing to do. The `AvroClassSecurityAutoConfiguration` of jeap-messaging installs the whitelist before any other bean
+is created, and therefore before an archived object can be read. Packages and classes to trust beyond the defaults are
+configured there — that is the single place they belong:
 
 ```yaml
 jeap:
-  process-archive:
-    reader:
-      avro:
-        additional-trusted-packages: com.example.archive
+  messaging:
+    avro:
+      trusted-packages: com.example.archive
+      trusted-classes: com.example.CustomLogicalType
 ```
 
-These properties use the prefix `jeap.process-archive.reader.avro`.
+### Applications not using jeap-messaging
 
-| Property                      | Default | Description                                                          |
-|-------------------------------|---------|----------------------------------------------------------------------|
-| `additional-trusted-packages` | —       | Packages trusted for Avro deserialization in addition to `ch.admin`  |
-| `additional-trusted-classes`  | —       | Classes trusted for Avro deserialization in addition to `ch.admin`   |
+Install the whitelist yourself, before the first archived object is read — in the `main` method, in a
+`BeanFactoryPostProcessor`, or in a `@BeforeAll` method of a test:
 
-The whitelist is global, static state in Avro and is installed exactly once per JVM, before the reader bean is
-created. If your service also uses jeap-messaging, that library installs the whitelist itself, from the properties
-`jeap.messaging.avro.trusted-packages` / `jeap.messaging.avro.trusted-classes`. Configure the additional packages
-there and leave the properties above unset: Avro validates a class only the first time it resolves it, so a second,
-differing whitelist cannot be applied and is rejected with an `IllegalStateException` at startup.
+```java
+// The jEAP default whitelist: the Avro generated types in ch.admin
+AvroClassSecurity.installDefaultIfMissing();
+
+// Or an explicit whitelist, if archived objects live outside ch.admin
+AvroClassSecurity.install(List.of("com.example.archive"), List.of());
+```
+
+`AvroClassSecurity` comes with `ch.admin.bit.jeap:jeap-messaging-avro`, which such an application has to add itself —
+this library only uses it in its own tests.
 
 ## Related
 

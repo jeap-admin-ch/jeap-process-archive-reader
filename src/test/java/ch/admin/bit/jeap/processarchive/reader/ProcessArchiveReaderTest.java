@@ -35,7 +35,8 @@ class ProcessArchiveReaderTest {
 
     @BeforeAll
     static void trustTestSchemaPackage() {
-        // The test schemas use the namespace "foo", which is not covered by the default whitelist
+        // The library does not install an Avro class whitelist, see docs/configuration.md. The test schemas use the
+        // namespace "foo", which the default whitelist does not trust.
         AvroClassSecurity.install(List.of("foo"), List.of());
     }
 

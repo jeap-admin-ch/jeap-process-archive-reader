@@ -1,10 +1,12 @@
 package ch.admin.bit.jeap.processarchive.reader;
 
 import ch.admin.bit.jeap.crypto.api.KeyReferenceCryptoService;
+import ch.admin.bit.jeap.messaging.avro.security.AvroClassSecurity;
 import ch.admin.bit.jeap.crypto.internal.core.noop.NoopKeyReferenceCryptoService;
 import ch.admin.bit.jeap.processarchive.reader.objectstorage.DecryptingStorageObjectRepository;
 import ch.admin.bit.jeap.processarchive.reader.objectstorage.S3StorageObjectRepository;
 import foo.Person;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +20,7 @@ import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -27,8 +30,7 @@ import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
 @EnableAutoConfiguration
-// The test schemas use the namespace "foo", which is not covered by the default whitelist
-@SpringBootTest(properties = "jeap.process-archive.reader.avro.additional-trusted-packages=foo")
+@SpringBootTest
 @ContextConfiguration(classes = {ProcessArchiveReaderAutoConfiguration.class})
 class ProcessArchiveReaderIT {
 
@@ -36,6 +38,13 @@ class ProcessArchiveReaderIT {
 
     @MockitoBean
     private S3Client s3Client;
+
+    @BeforeAll
+    static void trustTestSchemaPackage() {
+        // The library does not install an Avro class whitelist, see docs/configuration.md. The test schemas use the
+        // namespace "foo", which the default whitelist does not trust.
+        AvroClassSecurity.install(List.of("foo"), List.of());
+    }
 
     @Test
     void readArtifact() throws Exception {

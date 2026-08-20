@@ -7,13 +7,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [7.2.0] - 2026-08-20
 
-### Added
-- New properties `jeap.process-archive.reader.avro.additional-trusted-packages` and `additional-trusted-classes` to
-  extend the whitelist of the classes trusted for Avro deserialization
-
 ### Changed
-- Avro deserializes generated classes only if they are whitelisted, the jEAP Avro class whitelist is now installed when
-  reading archived objects (new dependency on `ch.admin.bit.jeap:jeap-messaging-avro`)
+- As of Avro 1.12.2, reading an archived object requires an installed Avro class whitelist. The library does not
+  install one: an application using jeap-messaging gets it from the jeap-messaging auto-configuration and configures
+  the packages to trust with `jeap.messaging.avro.trusted-packages`, an application without jeap-messaging installs it
+  itself with `AvroClassSecurity`. See [Avro class whitelist](docs/configuration.md#avro-class-whitelist)
 
 ## [7.1.0] - 2026-08-20
 
