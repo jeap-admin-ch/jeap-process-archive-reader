@@ -46,8 +46,8 @@ When `access-key` or `secret-key` is missing, the client falls back to the AWS
 ## Avro class whitelist
 
 Avro deserializes generated classes only if they are trusted. The library installs the jEAP whitelist, which trusts
-the package `ch.admin` — the package the archived objects of a jEAP process archive live in. A service reading
-archived objects of other packages has to add them to the whitelist:
+the Avro generated types in the package `ch.admin` — the package the archived objects of a jEAP process archive live
+in. A service reading archived objects of other packages has to add them to the whitelist:
 
 ```yaml
 jeap:
@@ -64,9 +64,11 @@ These properties use the prefix `jeap.process-archive.reader.avro`.
 | `additional-trusted-packages` | —       | Packages trusted for Avro deserialization in addition to `ch.admin`  |
 | `additional-trusted-classes`  | —       | Classes trusted for Avro deserialization in addition to `ch.admin`   |
 
-The whitelist is installed globally, i.e. for every Avro deserialization in the JVM. If your service also uses
-jeap-messaging, configure the additional packages there (`jeap.messaging.avro.trusted-packages`) instead — the
-properties above replace a whitelist already installed by jeap-messaging.
+The whitelist is global, static state in Avro and is installed exactly once per JVM, before the reader bean is
+created. If your service also uses jeap-messaging, that library installs the whitelist itself, from the properties
+`jeap.messaging.avro.trusted-packages` / `jeap.messaging.avro.trusted-classes`. Configure the additional packages
+there and leave the properties above unset: Avro validates a class only the first time it resolves it, so a second,
+differing whitelist cannot be applied and is rejected with an `IllegalStateException` at startup.
 
 ## Related
 

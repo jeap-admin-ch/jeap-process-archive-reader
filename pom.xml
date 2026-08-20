@@ -41,9 +41,9 @@
              Avro 1.12.2. Remove as soon as a jeap-spring-boot-parent based on jeap-internal-spring-boot-parent >= 9.0.0
              is released, the Avro version is then again taken from the jEAP parent. -->
         <avro.version>1.12.2</avro.version>
-        <!-- Temporary pin: AvroClassSecurity is introduced by jeap-messaging 17.17.0 (JEAP-7502). Remove as soon as a
-             jeap-spring-boot-parent managing that version is released. -->
-        <jeap-messaging.version>17.17.0-feature-JEAP-7502-SNAPSHOT</jeap-messaging.version>
+        <!-- Temporary pin: AvroClassSecurity is introduced by jeap-messaging 18.0.0 (JEAP-7502), which is not yet
+             released. Remove as soon as a jeap-spring-boot-parent managing that version is released. -->
+        <jeap-messaging.version>18.0.0-feature-update-dependencies-to-master-SNAPSHOT</jeap-messaging.version>
         <maven.javadoc.skip>false</maven.javadoc.skip>
     </properties>
 
