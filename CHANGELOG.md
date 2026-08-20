@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.2.0] - 2026-08-20
+
+### Added
+- New properties `jeap.process-archive.reader.avro.additional-trusted-packages` and `additional-trusted-classes` to
+  extend the whitelist of the classes trusted for Avro deserialization
+
+### Changed
+- Avro deserializes generated classes only if they are whitelisted, the jEAP Avro class whitelist is now installed when
+  reading archived objects (new dependency on `ch.admin.bit.jeap:jeap-messaging-avro`)
+
 ## [7.1.0] - 2026-08-20
 
 ### Changed

@@ -27,7 +27,8 @@ import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
 @EnableAutoConfiguration
-@SpringBootTest
+// The test schemas use the namespace "foo", which is not covered by the default whitelist
+@SpringBootTest(properties = "jeap.process-archive.reader.avro.additional-trusted-packages=foo")
 @ContextConfiguration(classes = {ProcessArchiveReaderAutoConfiguration.class})
 class ProcessArchiveReaderIT {
 

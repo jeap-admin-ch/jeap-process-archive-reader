@@ -1,11 +1,13 @@
 package ch.admin.bit.jeap.processarchive.reader;
 
+import ch.admin.bit.jeap.messaging.avro.security.AvroClassSecurity;
 import ch.admin.bit.jeap.processarchive.reader.objectstorage.S3StorageObjectRepository;
 import ch.admin.bit.jeap.processarchive.reader.objectstorage.StorageObject;
 import foo.Person;
 import lombok.SneakyThrows;
 import org.apache.avro.AvroTypeException;
 import org.apache.avro.SchemaParseException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,6 +32,12 @@ class ProcessArchiveReaderTest {
 
     @Mock
     private S3StorageObjectRepository s3StorageObjectRepository;
+
+    @BeforeAll
+    static void trustTestSchemaPackage() {
+        // The test schemas use the namespace "foo", which is not covered by the default whitelist
+        AvroClassSecurity.install(List.of("foo"), List.of());
+    }
 
     @Test
     @SneakyThrows

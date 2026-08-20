@@ -43,6 +43,31 @@ When `access-key` or `secret-key` is missing, the client falls back to the AWS
 `DefaultCredentialsProvider` (environment, profile, container/instance role, etc.). `access-key` and
 `secret-key` are excluded from the properties' `toString()` so they are not logged.
 
+## Avro class whitelist
+
+Avro deserializes generated classes only if they are trusted. The library installs the jEAP whitelist, which trusts
+the package `ch.admin` — the package the archived objects of a jEAP process archive live in. A service reading
+archived objects of other packages has to add them to the whitelist:
+
+```yaml
+jeap:
+  process-archive:
+    reader:
+      avro:
+        additional-trusted-packages: com.example.archive
+```
+
+These properties use the prefix `jeap.process-archive.reader.avro`.
+
+| Property                      | Default | Description                                                          |
+|-------------------------------|---------|----------------------------------------------------------------------|
+| `additional-trusted-packages` | —       | Packages trusted for Avro deserialization in addition to `ch.admin`  |
+| `additional-trusted-classes`  | —       | Classes trusted for Avro deserialization in addition to `ch.admin`   |
+
+The whitelist is installed globally, i.e. for every Avro deserialization in the JVM. If your service also uses
+jeap-messaging, configure the additional packages there (`jeap.messaging.avro.trusted-packages`) instead — the
+properties above replace a whitelist already installed by jeap-messaging.
+
 ## Related
 
 - [Getting started](getting-started.md)

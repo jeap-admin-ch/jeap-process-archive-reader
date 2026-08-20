@@ -1,5 +1,6 @@
 package ch.admin.bit.jeap.processarchive.reader;
 
+import ch.admin.bit.jeap.messaging.avro.security.AvroClassSecurity;
 import ch.admin.bit.jeap.processarchive.reader.objectstorage.S3StorageObjectRepository;
 import ch.admin.bit.jeap.processarchive.reader.objectstorage.StorageObject;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,12 @@ import java.util.Optional;
 public class ProcessArchiveReader {
 
     public static final String SCHEMA_FILE_KEY = "schema-file-key";
+
+    static {
+        // Avro deserializes generated classes only if they are whitelisted. Make sure a whitelist is installed even
+        // if the reader is used without the auto-configuration of this library.
+        AvroClassSecurity.installDefaultIfMissing();
+    }
 
     private final S3StorageObjectRepository s3StorageObjectRepository;
 

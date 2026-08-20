@@ -34,9 +34,16 @@
 
     <artifactId>jeap-process-archive-reader</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
-    <version>7.1.0-SNAPSHOT</version>
+    <version>7.2.0-SNAPSHOT</version>
 
     <properties>
+        <!-- Temporary pin: the Avro class whitelist (org.apache.avro.util.ClassSecurityValidator) only exists as of
+             Avro 1.12.2. Remove as soon as a jeap-spring-boot-parent based on jeap-internal-spring-boot-parent >= 9.0.0
+             is released, the Avro version is then again taken from the jEAP parent. -->
+        <avro.version>1.12.2</avro.version>
+        <!-- Temporary pin: AvroClassSecurity is introduced by jeap-messaging 17.17.0 (JEAP-7502). Remove as soon as a
+             jeap-spring-boot-parent managing that version is released. -->
+        <jeap-messaging.version>17.17.0-feature-JEAP-7502-SNAPSHOT</jeap-messaging.version>
         <maven.javadoc.skip>false</maven.javadoc.skip>
     </properties>
 
@@ -66,6 +73,11 @@
         <dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro-compiler</artifactId>
+        </dependency>
+        <dependency>
+            <!-- Provides the Avro class whitelist shared by all jEAP libraries deserializing Avro objects -->
+            <groupId>ch.admin.bit.jeap</groupId>
+            <artifactId>jeap-messaging-avro</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.admin.bit.jeap</groupId>
