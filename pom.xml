@@ -34,7 +34,7 @@
 
     <artifactId>jeap-process-archive-reader</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
-    <version>8.2.0-SNAPSHOT</version>
+    <version>8.2.1-SNAPSHOT</version>
 
     <properties>
         <maven.javadoc.skip>false</maven.javadoc.skip>
@@ -51,7 +51,7 @@
             <exclusions>
                 <exclusion>
                     <groupId>software.amazon.awssdk</groupId>
-                    <artifactId>apache-client</artifactId>
+                    <artifactId>apache5-client</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>software.amazon.awssdk</groupId>
